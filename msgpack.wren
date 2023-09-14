@@ -5,6 +5,7 @@
 class MsgPack {
   // Serializes given `data`.
   // Returns: String buffer of bytes containing the serialized data.
+  // See: https://github.com/msgpack/msgpack/blob/master/spec.md#serialization-type-to-format-conversion
   static pack(data) {
 
   }
@@ -12,6 +13,7 @@ class MsgPack {
   // Params: buffer: String buffer of bytes to deserialize.
   // Returns: List|Map containing deserialized data.
   // Throws: When malformed data is encountered or deserialization does not otherwise succeed.
+  // See: https://github.com/msgpack/msgpack/blob/master/spec.md#deserialization-format-to-type-conversion
   static unpack(buffer) {}
 }
 
