@@ -1,0 +1,30 @@
+name: MessagePack for Wren CI
+
+on: push
+
+jobs:
+  test:
+    name: Tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Wren console
+      run: |
+        wget "https://github.com/joshgoebel/wren-console/releases/download/v0.3.1/wren-console-v0.3.1-linux.tar.gz" -O /tmp/wren-console.tar.gz
+        mkdir -p /tmp/wren-console
+        tar xf /tmp/wren-console.tar.gz --directory=/tmp/wren-console
+        echo "/tmp/wren-console/bin" >> $GITHUB_PATH
+        echo "Installed Wren console to system path"
+    - name: Install Dependencies
+      run: wrenc package.wren install
+    # TODO: Lint Wren sources, see https://github.com/munificent/wrenalyzer
+    - name: Test
+      id: tests
+      # if: always() # Run tests even if lint step fails
+      run: wrenc msgpack.spec.wren
+    # - name: Upload Coverage to Codecov
+    #   # Upload test coverage even if lint step fails
+    #   if: success() || (steps.lint.outcome == 'failure' && steps.tests.outcome == 'success')
+    #   run: bash <(curl -s https://codecov.io/bash)
