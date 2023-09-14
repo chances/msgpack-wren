@@ -32,3 +32,13 @@ Assert.doesNotAbort {
   // FIXME: Assert.equal(sixAndChange.num, 6.44562)
   // FIXME: Assert.equal(sixAndChange.float32, 0x40CE4285)
 }
+
+Assert.doesNotAbort {
+  Assert.equal(Decimal.fromFloat32(0x0).toString(16), "0x0")
+  Assert.equal(Decimal.fromFloat32(0).toString(16), "0x0")
+  Assert.equal(Decimal.new(1).toString(16), "0x1")
+  Assert.equal(Decimal.new(10).toString(16), "0xA")
+  Assert.equal(Decimal.new(20).toString(16), "0x14")
+  Assert.equal(Decimal.new(218).toString(16), "0xDA")
+  Assert.equal(Decimal.new(Num.maxSafeInteger).toString(16), "0x1FFFFFFFFFFFFF")
+}

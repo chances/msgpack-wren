@@ -153,6 +153,28 @@ class Decimal {
     return "%(prettySign)%(_significand) ^ %(_exponent)"
   }
 
+  // Convert this decimal to an unsigned base 10 or 16 notation.
+  // Params: base: Num
+  toString(base) {
+    if (base != 10 && base != 16) Fiber.abort("Expected either base 10 or 16.")
+
+    var num = this.num
+    if (base == 10) return num.abs.toString
+    if (num == 0) return "0x0"
+
+    if (!num.isInteger) Fiber.abort("Unimplemented!")
+
+    var chars = "0123456789ABCDEF"
+    var buf = []
+
+    while (num > 0) {
+      buf.insert(0, chars[num % base])
+      num = (num / base).truncate
+    }
+
+    return "0x%(buf.join())"
+  }
+
   // Convert a 64-bit float, e.g. a Wren number, to a 32-bit float.
   //
   // The number is first converted to a 32-bit unsigned value, which will truncate its mantissa, reducing precision.
