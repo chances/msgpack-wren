@@ -156,7 +156,23 @@ class Tokens {
   static ext8 { 0xC7 }
   static ext16 { 0xC8 }
   static ext32 { 0xC9 }
+  // An IEEE 754 single-precision float is a 32-bit value with this layout:
+  //
+  // 1 Sign bit
+  // | 8 Exponent bits
+  // | |          24 Mantissa (i.e. fraction) bits
+  // | |          |
+  // S[Exponent-][Mantissa----------------]
+  // See: https://github.com/msgpack/msgpack/blob/master/spec.md#float-format-family
   static float32 { 0xCA }
+  // An IEEE 754 double-precision float is a 64-bit value with this layout:
+  //
+  // 1 Sign bit
+  // | 11 Exponent bits
+  // | |          52 Mantissa (i.e. fraction) bits
+  // | |          |
+  // S[Exponent-][Mantissa------------------------------------------]
+  // See: https://github.com/msgpack/msgpack/blob/master/spec.md#float-format-family
   static float64 { 0xCB }
   static uint8 { 0xCC }
   static uint16 { 0xCD }
