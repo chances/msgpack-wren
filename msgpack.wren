@@ -40,7 +40,11 @@ class Packer {
         // Signed 32-bit integer
         return [Tokens.int32, Packer.bytes(value)]
       }
+      // Signed 32-bit float
+      System.print("Signed 32-bit float: %(value)")
+      if ((value & 0x100000000) <= 0xFFFFFFFF) return [Tokens.float32, Packer.bytes(value)]
       // Signed 64-bit float
+      System.print("Signed 64-bit float: %(value)")
       return [Tokens.float64, Packer.bytes(value)]
     }
     if (value is String) {
@@ -69,14 +73,20 @@ class Packer {
   }
 
   static bytes(value) {
+    import "./binary" for Decimal
+
     // 8-bit integers
     if (value is Num && ((value < 0 ? ~value : value) & 0x100) < 0x100) return value & 0xFF
     // 16-bit integers
     if (value is Num && ((value < 0 ? ~value : value) & 0x10000) < 0x10000) return value & 0xFFFF
     // NaN, ±infinity, and other 32-bit integers and floats
-    if (value is Num) return value & 0xFFFFFFFF
-    if (value is String) return value.bytes
-    Fiber.abort("Cannot get binary representation of '%(value)'")
+    if (value is Num && (value & 0x100000000) <= 0xFFFFFFFF) return Decimal.toFloat32(value)
+    // NaN, ±infinity, and other 64-bit floats
+    if (value is Num) return value
+
+    if (value is String) return value.bytes.toList
+
+    Fiber.abort("Cannot map to binary representation of '%(value)'.")
   }
 }
 
